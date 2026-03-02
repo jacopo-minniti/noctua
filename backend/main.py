@@ -4,7 +4,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from obx.agents.chat import obx_agent
+from obx.agents.chat import build_obx_agent
 from obx.cli.utils import ensure_configured
 
 # Ensure obx configuration is loaded
@@ -23,11 +23,17 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
+    webSearchEnabled: bool = True
+    scholarSearchEnabled: bool = False
 
 @app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     async def event_generator():
         try:
+            obx_agent = build_obx_agent(
+                web_search_enabled=request.webSearchEnabled,
+                scholar_search_enabled=request.scholarSearchEnabled,
+            )
             # obx_agent is a Pydantic AI Agent. We use run_stream to stream deltas.
             async with obx_agent.run_stream(request.message) as result:
                 async for chunk in result.stream_text(delta=True):

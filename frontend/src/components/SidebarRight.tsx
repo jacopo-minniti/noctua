@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Layers, Lightbulb, FileText, ArrowRightCircle, Link as LinkIcon, File } from "lucide-react";
+import { X, Layers, Lightbulb, FileText, ArrowRightCircle, Link as LinkIcon } from "lucide-react";
 
 interface SidebarRightProps {
     isOpen: boolean;
@@ -13,7 +13,7 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
     const [activeTab, setActiveTab] = useState<"artifacts" | "sources">("artifacts");
 
     const sources = useMemo(() => {
-        const extractedSources: { title: string, href: string, isVaultNote: boolean }[] = [];
+        const extractedSources: { title: string, header?: string, href: string, sourceType: "vault" | "web" | "scholar", snippet?: string }[] = [];
         const linkRegex = /(?<!\!)\[([^\]]+)\]\(([^)]+)\)/g;
 
         // Also capture the legacy string-based citations just in case
@@ -28,6 +28,9 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
                 const title = match[1];
                 let href = match[2];
                 const isVaultNote = href.startsWith("obsidian://") || href.includes(".md");
+                const isScholar =
+                    title.toLowerCase().startsWith("scholar:") ||
+                    href.includes("scholar.google.");
 
                 if (isVaultNote && !href.startsWith("obsidian://")) {
                     const parts = href.split("#");
@@ -36,21 +39,84 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
                     href = `obsidian://open?vault=${encodeURIComponent("Jacopo's Vault")}&file=${filename}${header}`;
                 }
 
+                let displayTitle = title;
+                let displayHeader: string | undefined = undefined;
+
+                if (isVaultNote) {
+                    if (displayTitle.includes(" > ")) {
+                        const parts = displayTitle.split(" > ");
+                        displayTitle = parts[0].replace("vault note:", "").trim();
+                        displayHeader = `# ${parts[1].trim()}`;
+                    } else if (displayTitle.includes(">")) {
+                        const parts = displayTitle.split(">");
+                        displayTitle = parts[0].replace("vault note:", "").trim();
+                        displayHeader = `# ${parts[1].trim()}`;
+                    } else {
+                        displayTitle = displayTitle.replace("vault note:", "").trim();
+                    }
+                } else if (!isScholar && displayTitle.toLowerCase() === "web") {
+                    try {
+                        const url = new URL(href);
+                        displayTitle = url.hostname.replace("www.", "");
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+
                 if (!extractedSources.some(s => s.href === href)) {
-                    extractedSources.push({ title, href, isVaultNote });
+                    let rawAfter = msg.content.substring(match.index + match[0].length);
+                    // Remove leading punctuation and spaces
+                    rawAfter = rawAfter.replace(/^[\s,.:;'"\-_]+/, '');
+                    if (rawAfter.length > 70) {
+                        rawAfter = rawAfter.substring(0, 70);
+                        const lastSpace = rawAfter.lastIndexOf(" ");
+                        if (lastSpace > 0) rawAfter = rawAfter.substring(0, lastSpace);
+                        rawAfter += "...";
+                    }
+                    const snippet = rawAfter.replace(/\s+/g, ' ').trim();
+
+                    extractedSources.push({
+                        title: displayTitle,
+                        header: displayHeader,
+                        href,
+                        sourceType: isVaultNote ? "vault" : isScholar ? "scholar" : "web",
+                        snippet
+                    });
                 }
             }
 
             // Legacy
             while ((match = legacyRegex.exec(msg.content)) !== null) {
                 const text = match[1];
-                const parts = text.split(">");
-                const filename = parts[0].trim();
-                const header = parts.length > 1 ? `#${parts[1].trim()}` : "";
-                const href = `obsidian://open?vault=${encodeURIComponent("Jacopo's Vault")}&file=${encodeURIComponent(filename)}${encodeURIComponent(header)}`;
+                let displayTitle = text;
+                let displayHeader: string | undefined = undefined;
+
+                if (text.includes(" > ")) {
+                    const parts = text.split(" > ");
+                    displayTitle = parts[0].trim();
+                    displayHeader = `# ${parts[1].trim()}`;
+                } else if (text.includes(">")) {
+                    const parts = text.split(">");
+                    displayTitle = parts[0].trim();
+                    displayHeader = `# ${parts[1].trim()}`;
+                }
+
+                const filename = displayTitle;
+                const head = displayHeader ? displayHeader.replace("# ", "#") : "";
+                const href = `obsidian://open?vault=${encodeURIComponent("Jacopo's Vault")}&file=${encodeURIComponent(filename)}${encodeURIComponent(head)}`;
 
                 if (!extractedSources.some(s => s.href === href)) {
-                    extractedSources.push({ title: text, href, isVaultNote: true });
+                    let rawAfter = msg.content.substring(match.index + match[0].length);
+                    rawAfter = rawAfter.replace(/^[\s,.:;'"\-_]+/, '');
+                    if (rawAfter.length > 70) {
+                        rawAfter = rawAfter.substring(0, 70);
+                        const lastSpace = rawAfter.lastIndexOf(" ");
+                        if (lastSpace > 0) rawAfter = rawAfter.substring(0, lastSpace);
+                        rawAfter += "...";
+                    }
+                    const snippet = rawAfter.replace(/\s+/g, ' ').trim();
+
+                    extractedSources.push({ title: displayTitle, header: displayHeader, href, sourceType: "vault", snippet });
                 }
             }
         });
@@ -65,7 +131,7 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 400, opacity: 0 }}
                     transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-                    className="w-80 lg:w-96 h-full bg-[var(--background)] border-l border-[var(--notion-border)] flex flex-col absolute right-0 z-20 shadow-xl md:shadow-[-4px_0_24px_rgba(0,0,0,0.02)] md:relative"
+                    className="w-[30rem] lg:w-[36rem] h-full bg-[var(--background)] border-l border-[var(--notion-border)] flex flex-col absolute right-0 z-20 shadow-xl md:shadow-[-4px_0_24px_rgba(0,0,0,0.02)] md:relative"
                 >
                     {/* Header Controls */}
                     <div className="flex items-center justify-between px-5 pt-4 pb-2">
@@ -102,7 +168,7 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
                         </button>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-5 pb-24">
+                    <div className="flex-1 overflow-y-auto hide-scroll p-5 pb-24">
                         {activeTab === "artifacts" && (
                             <>
                                 {!activeContext ? (
@@ -148,22 +214,29 @@ export default function SidebarRight({ isOpen, onClose, activeContext, messages 
                                         <a
                                             key={i}
                                             href={source.href}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
+                                            target={source.sourceType === "vault" ? undefined : "_blank"}
+                                            rel={source.sourceType === "vault" ? undefined : "noopener noreferrer"}
                                             className="group flex flex-col p-3 rounded-lg border border-[var(--notion-border)] hover:bg-[var(--notion-hover)] transition-all bg-[var(--background)] shadow-sm"
                                         >
                                             <div className="flex items-center gap-2 mb-1">
-                                                {source.isVaultNote ? (
+                                                {source.sourceType === "vault" ? (
                                                     <img src="/obsidian-sources-icon.png" alt="Obsidian" className="w-4 h-4 object-contain inline" />
+                                                ) : source.sourceType === "scholar" ? (
+                                                    <img src="/gscholar-icon.png" alt="Google Scholar" className="w-4 h-4 object-contain inline" />
                                                 ) : (
                                                     <img src="/web-sources-icon.png" alt="Web" className="w-4 h-4 object-contain inline" />
                                                 )}
-                                                <span className={`text-sm font-medium truncate text-[#7b61ff] dark:text-[#a08cff]`}>
+                                                <span className={`text-sm font-bold truncate ${source.sourceType === "vault" ? "text-[var(--notion-text)]" : "text-[#7b61ff] dark:text-[#a08cff]"}`}>
                                                     {source.title}
                                                 </span>
                                             </div>
-                                            <span className="text-xs text-[var(--notion-text-light)] truncate overflow-hidden pl-6">
-                                                {decodeURIComponent(source.href.replace(`obsidian://open?vault=${encodeURIComponent("Jacopo's Vault")}&file=`, ""))}
+                                            {source.header && (
+                                                <span className="text-xs text-[#7b61ff] dark:text-[#a08cff] pl-7 opacity-90 pb-0.5 max-w-full block truncate">
+                                                    {source.header}
+                                                </span>
+                                            )}
+                                            <span className="text-xs text-[var(--notion-text-light)] truncate overflow-hidden pl-7 opacity-80 pt-0.5 block max-w-full">
+                                                {source.snippet ? `"${source.snippet}"` : (source.sourceType === "vault" ? "Local Obsidian Note" : decodeURIComponent(source.href.replace(`obsidian://open?vault=${encodeURIComponent("Jacopo's Vault")}&file=`, "")))}
                                             </span>
                                         </a>
                                     ))

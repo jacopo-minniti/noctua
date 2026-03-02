@@ -18,6 +18,12 @@ def structure_server():
         args=["-m", "obx.mcp.structure_server"],
     )
 
+def google_scholar_server():
+    return MCPServerStdio(
+        sys.executable,
+        args=["-m", "obx.mcp.google_scholar_server"],
+    )
+
 # DuckDuckGo MCP Server is disabled until its dependency constraints
 # are compatible with the latest pydantic-ai stack.
 

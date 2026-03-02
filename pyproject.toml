@@ -20,10 +20,18 @@ dependencies = [
     "pydantic-ai-slim[duckduckgo]>=1.53.0",
     "uvicorn>=0.40.0",
     "fastapi>=0.134.0",
+    "scholarly>=1.7.11",
 ]
 
 [project.scripts]
 obx = "obx.cli.main:app"
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["obx*"]
 
 [tool.uv]
 package = true
