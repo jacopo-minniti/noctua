@@ -1,26 +1,26 @@
 <p align="center">
-  <img src="logo.png" alt="obx logo" width="200" height="200" />
+  <img src="logo.png" alt="noctua logo" width="200" height="200" />
 </p>
 
-# obx
+# noctua
 
-**obx** is an AI-native CLI for Obsidian.md that blends direct file manipulation with semantic intelligence. It serves as a direct bridge between your terminal and your local Vault, utilizing a modern, lightweight AI stack.
+**noctua** is an AI-native CLI for Obsidian.md that blends direct file manipulation with semantic intelligence. It serves as a direct bridge between your terminal and your local Vault, utilizing a modern, lightweight AI stack.
 
 ## Installation
 
 ### Option 1: Development (Recommended for now)
-If you are developing or testing `obx` locally:
+If you are developing or testing `noctua` locally:
 
 ```bash
 # Initialize
 uv sync
 
 # Run commands
-uv run obx --help
+uv run noctua --help
 ```
 
 ### Option 2: Install as a Tool (Global Usage)
-To use `obx` directly without `uv run`:
+To use `noctua` directly without `uv run`:
 
 ```bash
 uv tool install .
@@ -28,7 +28,7 @@ uv tool install .
 
 Now you can run:
 ```bash
-obx chat
+noctua chat
 ```
 *(Ensure `~/.local/bin` or equivalent is in your PATH)*
 
@@ -37,21 +37,21 @@ obx chat
 Before using AI features, run the setup wizard:
 
 ```bash
-obx config
+noctua config
 ```
 This will ask for:
 1.  **Obsidian Vault Path**: The absolute path to your notes.
 2.  **API Keys**: Google Gemini (recommended/default), OpenAI, Anthropic, or OpenRouter.
 
-Settings are stored in `~/.obx/.env`.
+Settings are stored in `~/.noctua/.env`.
 
 ## Features
 
-- **Chat**: Interactive agent knowing your vault (`obx chat`)
-- **Ask**: Get answers to questions based on your vault with smart source citations (`obx ask "question"`)
-- **Semantic Search**: Find related notes concept-first (`obx search "topic"`)
-- **Direct IO**: Read (`obx read`) and Open (`obx open`) notes.
-- **Smart Insert**: Insert content into notes with AI-guided placement (`obx insert`)
+- **Chat**: Interactive agent knowing your vault (`noctua chat`)
+- **Ask**: Get answers to questions based on your vault with smart source citations (`noctua ask "question"`)
+- **Semantic Search**: Find related notes concept-first (`noctua search "topic"`)
+- **Direct IO**: Read (`noctua read`) and Open (`noctua open`) notes.
+- **Smart Insert**: Insert content into notes with AI-guided placement (`noctua insert`)
 
 ## Tech Stack
 - **Engine**: `pydantic-ai` + `Typer`
@@ -59,7 +59,7 @@ Settings are stored in `~/.obx/.env`.
 - **Package Manager**: `uv`
 
 ## Project Structure
-`src/obx/`
+`src/noctua/`
 - `cli/`: Command-line interface and commands.
 - `core/`: Configuration and core abstractions.
 - `rag/`: RAG engine and indexing logic (with header-aware chunking).
