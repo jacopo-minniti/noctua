@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional
 from questionary import Style
 import questionary
-from obx.utils.ui import (
+from noctua.utils.ui import (
     console,
     render_markdown,
     command_timer,
@@ -15,12 +15,12 @@ from obx.utils.ui import (
     extract_usage,
     log_tokens_generated,
 )
-from obx.cli.utils import ensure_configured
-from obx.core.config import settings
-from obx.utils.fs import read_note, write_note, fuzzy_find
-from obx.utils.editor import Editor
-from obx.agents.editor import editor_agent, EditProposal
-from obx.rag.engine import RAG
+from noctua.cli.utils import ensure_configured
+from noctua.core.config import settings
+from noctua.utils.fs import read_note, write_note, fuzzy_find
+from noctua.utils.editor import Editor
+from noctua.agents.editor import editor_agent, EditProposal
+from noctua.rag.engine import RAG
 
 def open_command(
     note: str,

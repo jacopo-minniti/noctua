@@ -1,11 +1,11 @@
 from pydantic_ai import Agent
 from pydantic_ai.common_tools.duckduckgo import duckduckgo_search_tool
-from obx.core.config import settings
-from obx.utils.models import resolve_model
-from obx.agents.common import vault_server, structure_server, google_scholar_server
+from noctua.core.config import settings
+from noctua.utils.models import resolve_model
+from noctua.agents.common import vault_server, structure_server, google_scholar_server
 
-# --- Main Agent ("obx chat") ---
-OBX_SYSTEM_PROMPT = f"""You are **obx**, the intelligent orchestrator of the user's Obsidian.md vault.
+# --- Main Agent ("noctua chat") ---
+NOCTUA_SYSTEM_PROMPT = f"""You are **noctua**, the intelligent orchestrator of the user's Obsidian.md vault.
 Your goal is to help the user manage their knowledge, enhance their learning, and retrieve information efficiently.
 
 ### 🛡️ Core Principles
@@ -32,7 +32,7 @@ Your goal is to help the user manage their knowledge, enhance their learning, an
 - Always confirm completion of file operations (writing/moving notes).
 
 ### 💡 Specialized Pipelines
-You can directly execute specialized interactive pipelines using the `run_obx_command` tool.
+You can directly execute specialized interactive pipelines using the `run_noctua_command` tool.
 - `make guide <topic>`: For deep-dive study guides.
 - `make note <topic> --source <file>`: For creating formatted notes from raw sources.
 - `make flashcard <note>`: For generating flashcards targeting a specific note.
@@ -41,12 +41,12 @@ You can directly execute specialized interactive pipelines using the `run_obx_co
 **Rule**: If the user's intent matches one of these specific actions, execute the command instead of trying to replicate it with `write_note_tool`.
 """
 
-def _run_obx_command(command: str) -> str:
+def _run_noctua_command(command: str) -> str:
     """
-    Execute a specialized obx CLI command.
+    Execute a specialized noctua CLI command.
     Use this to trigger interactive pipelines like 'make flashcard', 'make note', or 'recall'.
     Format: 'make flashcard "Topic"' or 'recall'.
-    DO NOT include 'obx' in the command string, just the sub-command and arguments.
+    DO NOT include 'noctua' in the command string, just the sub-command and arguments.
     """
     import subprocess
     import sys
@@ -58,20 +58,20 @@ def _run_obx_command(command: str) -> str:
          return "Error: Recursion detected. You cannot run 'chat' inside 'chat'."
 
     # Prepend the module name to run it through Python
-    args = [sys.executable, "-m", "obx.cli.main"] + cmd_parts
+    args = [sys.executable, "-m", "noctua.cli.main"] + cmd_parts
     
     try:
         # Run the command and allow it to use the current terminal for interaction
         result = subprocess.run(args, check=False)
         if result.returncode == 0:
-            return f"Command 'obx {command}' completed successfully."
+            return f"Command 'noctua {command}' completed successfully."
         else:
-            return f"Command 'obx {command}' finished with exit code {result.returncode}."
+            return f"Command 'noctua {command}' finished with exit code {result.returncode}."
     except Exception as e:
         return f"Error executing command: {e}"
 
 
-def build_obx_agent(
+def build_noctua_agent(
     *,
     web_search_enabled: bool = True,
     scholar_search_enabled: bool = False,
@@ -96,7 +96,7 @@ def build_obx_agent(
             "- **External Knowledge**: External web and scholar tools are disabled for this request. Answer strictly from vault data and internal reasoning."
         )
 
-    prompt = OBX_SYSTEM_PROMPT.replace(
+    prompt = NOCTUA_SYSTEM_PROMPT.replace(
         "### 📝 Citation Format",
         "\n".join(external_tool_instructions) + "\n\n### 📝 Citation Format",
     )
@@ -108,9 +108,9 @@ def build_obx_agent(
         tools=tools,
         toolsets=toolsets,
     )
-    agent.tool_plain(_run_obx_command)
+    agent.tool_plain(_run_noctua_command)
     return agent
 
 
 # Backward-compatible default agent for CLI flows.
-obx_agent = build_obx_agent()
+noctua_agent = build_noctua_agent()

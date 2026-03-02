@@ -1,10 +1,10 @@
 from pydantic_ai import Agent
 from pydantic import BaseModel, Field
 from typing import List
-from obx.core.config import settings
-from obx.utils.models import resolve_model
+from noctua.core.config import settings
+from noctua.utils.models import resolve_model
 
-# --- Editor Agent ("obx insert") ---
+# --- Editor Agent ("noctua insert") ---
 
 class EditProposal(BaseModel):
     reasoning: str = Field(description="Why this insertion point was chosen.")

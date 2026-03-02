@@ -1,16 +1,16 @@
 import typer
 from pathlib import Path
-from obx.core.config import settings
-from obx.utils.ui import console
-from obx.utils.fs import update_note_yaml
-from obx.core.learning_parser import get_all_learning_items
-from obx.core.flashcard import calculate_memory_score
-from obx.core.exercise import calculate_exercise_score
+from noctua.core.config import settings
+from noctua.utils.ui import console
+from noctua.utils.fs import update_note_yaml
+from noctua.core.learning_parser import get_all_learning_items
+from noctua.core.flashcard import calculate_memory_score
+from noctua.core.exercise import calculate_exercise_score
 
 def ensure_configured():
     if not settings.is_configured:
-        console.print("[red]Error: obx is not configured.[/red]")
-        console.print("Run [bold]obx config[/bold] to set up your vault path and API keys.")
+        console.print("[red]Error: noctua is not configured.[/red]")
+        console.print("Run [bold]noctua config[/bold] to set up your vault path and API keys.")
         raise typer.Exit(code=1)
 
 def update_note_scores(path: Path, note_items: dict, note_content: str) -> str:

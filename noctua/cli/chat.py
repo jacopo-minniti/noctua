@@ -2,13 +2,13 @@ import typer
 import asyncio
 import questionary
 from typing import Optional
-from obx.utils.ui import console, stream_agent_output, command_timer, log_model_usage, log_tokens_generated
-from obx.cli.utils import ensure_configured
-from obx.core.config import settings
+from noctua.utils.ui import console, stream_agent_output, command_timer, log_model_usage, log_tokens_generated
+from noctua.cli.utils import ensure_configured
+from noctua.core.config import settings
 
 def chat_command(initial_msg: Optional[str] = None):
     """Start an interactive chat session with the AI agent."""
-    from obx.agents.chat import obx_agent
+    from noctua.agents.chat import noctua_agent
     
     ensure_configured()
     
@@ -16,11 +16,11 @@ def chat_command(initial_msg: Optional[str] = None):
         with command_timer():
             log_model_usage("Model", settings.reasoning_model)
             try:
-                asyncio.run(stream_agent_output(obx_agent, initial_msg))
+                asyncio.run(stream_agent_output(noctua_agent, initial_msg))
             except Exception as e:
                 console.print(f"[red]Error:[/red] {e}")
     else:
-        console.print("[bold green]obx chat initialized.[/bold green] Type 'exit' to quit.")
+        console.print("[bold green]noctua chat initialized.[/bold green] Type 'exit' to quit.")
     
     while True:
         try:
@@ -31,7 +31,7 @@ def chat_command(initial_msg: Optional[str] = None):
             with command_timer():
                 log_model_usage("Model", settings.reasoning_model)
                 try:
-                    _, usage = asyncio.run(stream_agent_output(obx_agent, user_input))
+                    _, usage = asyncio.run(stream_agent_output(noctua_agent, user_input))
                     log_tokens_generated(usage)
                 except Exception as e:
                     console.print(f"[red]Error:[/red] {e}")

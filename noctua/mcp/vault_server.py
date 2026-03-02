@@ -3,11 +3,11 @@ import re
 
 from mcp.server.fastmcp import FastMCP
 
-from obx.rag.engine import RAG
-from obx.utils.fs import read_note, list_note_headers, write_note, list_notes, fuzzy_find
+from noctua.rag.engine import RAG
+from noctua.utils.fs import read_note, list_note_headers, write_note, list_notes, fuzzy_find
 
 
-mcp = FastMCP("obx-vault")
+mcp = FastMCP("noctua-vault")
 _rag_engine: Optional[RAG] = None
 
 
@@ -92,7 +92,7 @@ def get_flashcards_tool(filename: str) -> str:
     Get all flashcards from a note.
     Returns flashcards with their current SRS state.
     """
-    from obx.core.learning_parser import parse_flashcards
+    from noctua.core.learning_parser import parse_flashcards
     
     content = read_note(filename)
     if content.startswith("Error:"):
@@ -119,7 +119,7 @@ def get_exercises_tool(filename: str) -> str:
     Get all exercises from a note.
     Returns exercises with their current grade and progress.
     """
-    from obx.core.learning_parser import parse_exercises
+    from noctua.core.learning_parser import parse_exercises
     
     content = read_note(filename)
     if content.startswith("Error:"):
@@ -145,7 +145,7 @@ def get_learning_status_tool(filename: str) -> str:
     Get the overall learning status for a note.
     Returns memory and exercise scores from YAML frontmatter.
     """
-    from obx.utils.fs import get_learning_scores
+    from noctua.utils.fs import get_learning_scores
     
     scores = get_learning_scores(filename)
     return (
@@ -159,7 +159,7 @@ def get_due_flashcards_tool(filename: str) -> str:
     """
     Get flashcards that are currently due for review.
     """
-    from obx.core.learning_parser import parse_flashcards
+    from noctua.core.learning_parser import parse_flashcards
     from datetime import datetime
     
     content = read_note(filename)

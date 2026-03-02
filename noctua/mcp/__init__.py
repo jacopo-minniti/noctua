@@ -1,1 +1,1 @@
-"""MCP servers for obx."""
+"""MCP servers for noctua."""

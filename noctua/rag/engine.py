@@ -17,8 +17,8 @@ Embedder = None
 
 from rich.progress import Progress
 
-from obx.core.config import settings, OBX_DIR
-from obx.utils.ui import console
+from noctua.core.config import settings, NOCTUA_DIR
+from noctua.utils.ui import console
 
 class RAG:
     def __init__(self):
@@ -35,9 +35,9 @@ class RAG:
             except ImportError:
                 MarkItDown = None
 
-        self.index_path = OBX_DIR / "txtai_index"
-        self.tracker_path = OBX_DIR / "index_tracker.json"
-        self.metadata_path = OBX_DIR / "metadata_store.json"
+        self.index_path = NOCTUA_DIR / "txtai_index"
+        self.tracker_path = NOCTUA_DIR / "index_tracker.json"
+        self.metadata_path = NOCTUA_DIR / "metadata_store.json"
         
         if not Embeddings: raise ImportError("txtai not installed.")
         if not SemanticChunker: raise ImportError("chonkie not installed.")

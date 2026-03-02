@@ -5,8 +5,8 @@ import json
 from typing import List, Tuple, Optional, Dict, Any
 from dataclasses import dataclass
 
-from obx.core.flashcard import Flashcard, FlashcardState
-from obx.core.exercise import Exercise, ExerciseGrade
+from noctua.core.flashcard import Flashcard, FlashcardState
+from noctua.core.exercise import Exercise, ExerciseGrade
 
 
 # Regex patterns for parsing

@@ -8,7 +8,7 @@ import subprocess
 from pathlib import Path
 from collections import defaultdict
 
-from obx.utils.ui import (
+from noctua.utils.ui import (
     console,
     format_markdown,
     stream_agent_output,
@@ -17,9 +17,9 @@ from obx.utils.ui import (
     log_embedding_usage,
     log_tokens_generated,
 )
-from obx.cli.utils import ensure_configured
-from obx.core.config import settings
-from obx.utils.fs import resolve_note_path
+from noctua.cli.utils import ensure_configured
+from noctua.core.config import settings
+from noctua.utils.fs import resolve_note_path
 
 def index_command(
     clear: bool = typer.Option(False, "--clear", help="Clear the existing index and re-index everything.")
@@ -32,7 +32,7 @@ def index_command(
 
         try:
             with console.status("Initializing indexing engine..."):
-                from obx.rag.engine import RAG
+                from noctua.rag.engine import RAG
                 rag = RAG()
             asyncio.run(rag.ingest(clear=clear))
         except Exception as e:
@@ -50,7 +50,7 @@ def search_command(
         
         try:
             with console.status("Initializing search engine..."):
-                from obx.rag.engine import RAG
+                from noctua.rag.engine import RAG
                 rag = RAG()
                 results = rag.search(topic, limit=15)
                 
@@ -221,7 +221,7 @@ def ask_command(
 
             # Stream the response
             try:
-                from obx.agents.ask import ask_agent
+                from noctua.agents.ask import ask_agent
                 output, usage = await stream_agent_output(ask_agent, prompt)
                 log_tokens_generated(usage)
                 # Handle --where output

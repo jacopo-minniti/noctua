@@ -11,7 +11,7 @@ from pathlib import Path
 from pydantic_ai import BinaryContent
 
 
-from obx.utils.ui import (
+from noctua.utils.ui import (
     console,
     stream_agent_output,
     command_timer,
@@ -19,11 +19,11 @@ from obx.utils.ui import (
     log_tokens_generated,
     extract_usage,
 )
-from obx.cli.utils import ensure_configured, update_note_scores
-from obx.core.learning_parser import get_all_learning_items
-from obx.core.config import settings
-from obx.utils.fs import resolve_note_path, read_note, update_note_yaml, get_note_yaml
-from obx.utils.editor import Editor
+from noctua.cli.utils import ensure_configured, update_note_scores
+from noctua.core.learning_parser import get_all_learning_items
+from noctua.core.config import settings
+from noctua.utils.fs import resolve_note_path, read_note, update_note_yaml, get_note_yaml
+from noctua.utils.editor import Editor
 
 
 make = typer.Typer(help="Tools for creating content (guides, flashcards, notes, exercises).")
@@ -247,7 +247,7 @@ async def _insert_with_approval(
     
     with console.status(f"Planning {content_type} placement..."):
         try:
-            from obx.agents.editor import insert_learning_agent
+            from noctua.agents.editor import insert_learning_agent
             result = await insert_learning_agent.run(prompt)
             log_tokens_generated(extract_usage(getattr(result, "usage", None)))
             
@@ -422,7 +422,7 @@ def guide(
     
         async def run_stream():
             try:
-                from obx.agents.guide import study_guide_agent
+                from noctua.agents.guide import study_guide_agent
                 output, usage = await stream_agent_output(study_guide_agent, prompt)
                 log_tokens_generated(usage)
                 
@@ -451,10 +451,10 @@ def note(
     3. Add exercises using exercise_agent (with approval)
     
     Examples:
-        obx make note "Momentum" -s "textbook.pdf"
-        obx make note "Topic" --with-flashcards --with-exercises
-        obx make note "Topic" --where "Custom Note Name"
-        obx make note "Topic" --where here  # Print to stdout
+        noctua make note "Momentum" -s "textbook.pdf"
+        noctua make note "Topic" --with-flashcards --with-exercises
+        noctua make note "Topic" --where "Custom Note Name"
+        noctua make note "Topic" --where here  # Print to stdout
     """
     with command_timer():
         ensure_configured()
@@ -481,7 +481,7 @@ def note(
         async def run_stream():
             nonlocal target
             try:
-                from obx.agents.flashcard_agent import note_agent
+                from noctua.agents.flashcard_agent import note_agent
                 output, usage = await stream_agent_output(note_agent, prompt)
                 log_tokens_generated(usage)
                 
@@ -584,7 +584,7 @@ def note(
                     
                     # Run flashcard command as a subprocess for complete isolation
                     # This avoids event loop / MCP resource conflicts
-                    cmd = [sys.executable, "-m", "obx.cli.main", "make", "flashcard", topic, "--where", str(target)]
+                    cmd = [sys.executable, "-m", "noctua.cli.main", "make", "flashcard", topic, "--where", str(target)]
                     if sources:
                         for s in sources:
                             cmd.extend(["--source", s])
@@ -597,7 +597,7 @@ def note(
                     console.print(f"\n[bold blue]Generating Exercises for '{topic}'...[/bold blue]")
                     
                     # Run exercise command as a subprocess for complete isolation
-                    cmd = [sys.executable, "-m", "obx.cli.main", "make", "exercise", topic, "--where", str(target)]
+                    cmd = [sys.executable, "-m", "noctua.cli.main", "make", "exercise", topic, "--where", str(target)]
                     if sources:
                         for s in sources:
                             cmd.extend(["--source", s])
@@ -641,9 +641,9 @@ def flashcard(
     You will review and approve with diff visualization.
     
     Examples:
-        obx make flashcard "Groups"
-        obx make flashcard "Groups" -s "/path/to/textbook.pdf" --where "Groups"
-        obx make flashcard "Linear Algebra" -c 15 --where "Linear Algebra Notes"
+        noctua make flashcard "Groups"
+        noctua make flashcard "Groups" -s "/path/to/textbook.pdf" --where "Groups"
+        noctua make flashcard "Linear Algebra" -c 15 --where "Linear Algebra Notes"
     """
     with command_timer():
         ensure_configured()
@@ -668,7 +668,7 @@ def flashcard(
     
         async def run_stream():
             try:
-                from obx.agents.flashcard_agent import flashcard_agent
+                from noctua.agents.flashcard_agent import flashcard_agent
                 output, usage = await stream_agent_output(flashcard_agent, prompt)
                 log_tokens_generated(usage)
                 
@@ -697,8 +697,8 @@ def exercise(
     You will review and approve with diff visualization.
     
     Examples:
-        obx make exercise "Calculus"
-        obx make exercise "Groups" -s "/path/to/textbook.pdf" --where "Groups"
+        noctua make exercise "Calculus"
+        noctua make exercise "Groups" -s "/path/to/textbook.pdf" --where "Groups"
     """
     with command_timer():
         ensure_configured()
@@ -722,7 +722,7 @@ def exercise(
     
         async def run_stream():
             try:
-                from obx.agents.exercise_agent import exercise_agent
+                from noctua.agents.exercise_agent import exercise_agent
                 output, usage = await stream_agent_output(exercise_agent, prompt)
                 log_tokens_generated(usage)
                 

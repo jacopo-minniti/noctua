@@ -3,11 +3,11 @@ import re
 from pathlib import Path
 from typing import List, Optional
 from datetime import datetime
-from obx.core.config import settings
+from noctua.core.config import settings
 
 def _get_vault_path() -> Path:
     if not settings.vault_path:
-        raise ValueError("Vault path not configured. Run 'obx config' first.")
+        raise ValueError("Vault path not configured. Run 'noctua config' first.")
     return settings.vault_path
 
 def read_note(filename: str, header: Optional[str] = None) -> str:
@@ -135,7 +135,7 @@ def write_generated_note(content: str, filename: Optional[str] = None) -> str:
 
     file_path = out_dir / filename
     try:
-        tagged_content = "---\ntags: [obx]\n---\n\n" + content.strip() + "\n"
+        tagged_content = "---\ntags: [noctua]\n---\n\n" + content.strip() + "\n"
         file_path.write_text(tagged_content, encoding="utf-8")
         return f"Successfully wrote to {file_path}"
     except Exception as e:

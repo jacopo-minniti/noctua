@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "obx Chat",
+  title: "noctua Chat",
   description: "AI-native CLI for Obsidian.md, now with a web UI",
 };
 

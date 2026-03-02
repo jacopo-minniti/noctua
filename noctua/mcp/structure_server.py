@@ -1,8 +1,8 @@
 from typing import Optional
 from mcp.server.fastmcp import FastMCP
-from obx.utils.fs import list_vault_hierarchy, list_folder_contents
+from noctua.utils.fs import list_vault_hierarchy, list_folder_contents
 
-mcp = FastMCP("obx-structure")
+mcp = FastMCP("noctua-structure")
 
 @mcp.tool()
 def list_vault_structure() -> str:

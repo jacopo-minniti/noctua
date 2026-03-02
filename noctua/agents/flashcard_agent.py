@@ -2,9 +2,9 @@
 
 from pydantic_ai import Agent
 from pydantic_ai.common_tools.duckduckgo import duckduckgo_search_tool
-from obx.core.config import settings
-from obx.utils.models import resolve_model
-from obx.agents.common import vault_server, structure_server
+from noctua.core.config import settings
+from noctua.utils.models import resolve_model
+from noctua.agents.common import vault_server, structure_server
 
 
 # --- Flashcard Generation Agent ---
@@ -85,7 +85,7 @@ Use this structure for learning notes:
 
 ```markdown
 ---
-tags: [obx, topic-tag]
+tags: [noctua, topic-tag]
 folder: [Suggested/Folder/Path]
 memory: 0.0
 exercise: 0.0

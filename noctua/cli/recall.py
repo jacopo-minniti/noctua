@@ -9,7 +9,7 @@ from questionary import Style
 from typing import Optional
 from pathlib import Path
 
-from obx.utils.ui import (
+from noctua.utils.ui import (
     console,
     stream_agent_output,
     command_timer,
@@ -18,24 +18,24 @@ from obx.utils.ui import (
     render_markdown,
     extract_usage,
 )
-from obx.cli.utils import ensure_configured, update_note_scores
-from obx.core.config import settings
-from obx.utils.fs import (
+from noctua.cli.utils import ensure_configured, update_note_scores
+from noctua.core.config import settings
+from noctua.utils.fs import (
     resolve_note_path,
     get_learning_scores,
     update_learning_scores,
     update_note_yaml,
 )
-from obx.core.learning_parser import (
+from noctua.core.learning_parser import (
     get_all_learning_items,
     update_flashcard_in_content,
     update_exercise_in_content,
 )
-from obx.core.flashcard import Flashcard, FlashcardAlgorithm, Rating, calculate_memory_score
-from obx.core.exercise import Exercise, ExerciseGrade, calculate_exercise_score
-from obx.core.recall import RecallOrchestrator, TopicTypeEstimator
-from obx.agents.recall_agent import recall_agent, exercise_reviewer_agent
-from obx.rag.engine import RAG
+from noctua.core.flashcard import Flashcard, FlashcardAlgorithm, Rating, calculate_memory_score
+from noctua.core.exercise import Exercise, ExerciseGrade, calculate_exercise_score
+from noctua.core.recall import RecallOrchestrator, TopicTypeEstimator
+from noctua.agents.recall_agent import recall_agent, exercise_reviewer_agent
+from noctua.rag.engine import RAG
 
 
 # Custom style for questionary
@@ -120,7 +120,7 @@ async def _run_recall_session(
         
         if not all_flashcards and not all_exercises:
             console.print("[yellow]No flashcards or exercises found in the note(s).[/yellow]")
-            console.print("[dim]Use 'obx make flashcard' or 'obx make exercise' to add some.[/dim]")
+            console.print("[dim]Use 'noctua make flashcard' or 'noctua make exercise' to add some.[/dim]")
             return
         
         # Display stats
@@ -270,7 +270,7 @@ def _find_topic_notes(topic: str) -> list[Path]:
     try:
         rag = RAG()
         if not rag.index_exists():
-            console.print("[yellow]Search index not found. Run 'obx index' first.[/yellow]")
+            console.print("[yellow]Search index not found. Run 'noctua index' first.[/yellow]")
             return []
         
         results = rag.search(topic, limit=5)

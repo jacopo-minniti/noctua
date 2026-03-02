@@ -4,8 +4,8 @@ from typing import List, Optional, Tuple, Union
 from dataclasses import dataclass
 from datetime import datetime
 
-from obx.core.flashcard import Flashcard, FlashcardAlgorithm, calculate_memory_score
-from obx.core.exercise import Exercise, ExerciseSelector, calculate_exercise_score
+from noctua.core.flashcard import Flashcard, FlashcardAlgorithm, calculate_memory_score
+from noctua.core.exercise import Exercise, ExerciseSelector, calculate_exercise_score
 
 
 @dataclass

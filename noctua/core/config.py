@@ -4,8 +4,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
 HOME_DIR = Path.home()
-OBX_DIR = HOME_DIR / ".obx"
-ENV_FILE = OBX_DIR / ".env"
+NOCTUA_DIR = HOME_DIR / ".noctua"
+ENV_FILE = NOCTUA_DIR / ".env"
 
 class Settings(BaseSettings):
     vault_path: Optional[Path] = Field(None, description="Path to the Obsidian Vault")
@@ -50,8 +50,8 @@ class Settings(BaseSettings):
         return self.vault_path is not None and self.vault_path.exists()
 
     def save(self):
-        """Persist current settings to ~/.obx/.env"""
-        OBX_DIR.mkdir(parents=True, exist_ok=True)
+        """Persist current settings to ~/.noctua/.env"""
+        NOCTUA_DIR.mkdir(parents=True, exist_ok=True)
         import json
         with open(ENV_FILE, "w") as f:
             if self.vault_path:

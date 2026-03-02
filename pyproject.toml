@@ -1,5 +1,5 @@
 [project]
-name = "obx"
+name = "noctua"
 version = "0.1.0"
 description = "AI-native CLI for Obsidian.md to superpower your learning"
 readme = "README.md"
@@ -24,14 +24,14 @@ dependencies = [
 ]
 
 [project.scripts]
-obx = "obx.cli.main:app"
+noctua = "noctua.cli.main:app"
 
 [build-system]
 requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-include = ["obx*"]
+include = ["noctua*"]
 
 [tool.uv]
 package = true

@@ -37,8 +37,8 @@ export default function Home() {
           <button onClick={toggleLeftSidebar} className="p-1 hover:bg-[var(--notion-hover)] rounded">
             <Menu size={18} className="text-[var(--notion-text-light)]" />
           </button>
-          <img src="/logo.png" alt="obx" className="w-5 h-5 object-contain" />
-          <span className="font-semibold text-sm mr-1">obx</span>
+          <img src="/logo.png" alt="noctua" className="w-5 h-5 object-contain" />
+          <span className="font-semibold text-sm mr-1">noctua</span>
         </div>
         <button
           onClick={toggleRightSidebar}
@@ -63,8 +63,8 @@ export default function Home() {
               <Menu size={20} className="group-hover:text-[var(--notion-text)] transition-colors" />
             </button>
             <div className="flex items-center gap-2 select-none pointer-events-none opacity-80 backdrop-blur-sm bg-[var(--background)]/50 px-2 py-1 rounded-md border border-[var(--notion-border)]">
-              <img src="/logo.png" alt="obx" className="w-5 h-5 object-contain" />
-              <span className="font-semibold text-sm text-[var(--notion-text)]">obx</span>
+              <img src="/logo.png" alt="noctua" className="w-5 h-5 object-contain" />
+              <span className="font-semibold text-sm text-[var(--notion-text)]">noctua</span>
             </div>
           </>
         )}

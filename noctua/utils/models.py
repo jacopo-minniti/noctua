@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from typing import Any
-from obx.core.config import settings
-from obx.utils.ui import normalize_model_id
+from noctua.core.config import settings
+from noctua.utils.ui import normalize_model_id
 
 def resolve_model(model_id: str) -> Any:
     """
@@ -29,7 +29,7 @@ def resolve_model(model_id: str) -> Any:
         api_key = settings.openrouter_api_key
         if not api_key:
             raise RuntimeError(
-                "OPENROUTER_API_KEY is not set. Run `obx config keys` and set the OpenRouter API Key."
+                "OPENROUTER_API_KEY is not set. Run `noctua config keys` and set the OpenRouter API Key."
             )
 
         # Create client specifically to inject reasoning parameters if needed
@@ -47,7 +47,7 @@ def resolve_model(model_id: str) -> Any:
                     kwargs["extra_body"] = {}
                 
                 # Add reasoning config if not present
-                # usage: obx config model -> OpenRouter -> Reasoning Effort
+                # usage: noctua config model -> OpenRouter -> Reasoning Effort
                 reasoning = kwargs["extra_body"].get("reasoning")
                 if not reasoning:
                     kwargs["extra_body"]["reasoning"] = {
@@ -61,7 +61,7 @@ def resolve_model(model_id: str) -> Any:
 
         provider = OpenRouterProvider(
             openai_client=client,
-            app_title="obx",
+            app_title="noctua",
         )
         return OpenRouterModel(name, provider=provider)
 

@@ -36,8 +36,8 @@ export default function SidebarLeft({ isOpen, onClose }: SidebarLeftProps) {
                     {/* Header */}
                     <div className="flex items-center justify-between px-4 pb-4">
                         <div className="flex items-center gap-2 text-[var(--notion-text-light)] text-sm font-medium p-1.5 rounded transition-colors group">
-                            <img src="/logo.png" alt="obx" className="w-6 h-6 object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />
-                            <span className="group-hover:text-[var(--notion-text)]">obx</span>
+                            <img src="/logo.png" alt="noctua" className="w-6 h-6 object-contain" onError={(e) => e.currentTarget.style.display = 'none'} />
+                            <span className="group-hover:text-[var(--notion-text)]">noctua</span>
                         </div>
 
                         <button

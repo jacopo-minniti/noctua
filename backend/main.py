@@ -4,13 +4,13 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from obx.agents.chat import build_obx_agent
-from obx.cli.utils import ensure_configured
+from noctua.agents.chat import build_noctua_agent
+from noctua.cli.utils import ensure_configured
 
-# Ensure obx configuration is loaded
+# Ensure noctua configuration is loaded
 ensure_configured()
 
-app = FastAPI(title="obx API")
+app = FastAPI(title="noctua API")
 
 # Setup CORS for local dev
 app.add_middleware(
@@ -30,12 +30,12 @@ class ChatRequest(BaseModel):
 async def chat_endpoint(request: ChatRequest):
     async def event_generator():
         try:
-            obx_agent = build_obx_agent(
+            noctua_agent = build_noctua_agent(
                 web_search_enabled=request.webSearchEnabled,
                 scholar_search_enabled=request.scholarSearchEnabled,
             )
-            # obx_agent is a Pydantic AI Agent. We use run_stream to stream deltas.
-            async with obx_agent.run_stream(request.message) as result:
+            # noctua_agent is a Pydantic AI Agent. We use run_stream to stream deltas.
+            async with noctua_agent.run_stream(request.message) as result:
                 async for chunk in result.stream_text(delta=True):
                     yield chunk
         except Exception as e:

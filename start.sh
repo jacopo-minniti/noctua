@@ -1,5 +1,5 @@
 #!/bin/bash
-# start.sh - obx Web App Launcher
+# start.sh - noctua Web App Launcher
 
 # Get the script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -13,7 +13,7 @@ if [ ! -d "frontend/out" ]; then
     cd ..
 fi
 
-echo "Starting obx Web server..."
+echo "Starting noctua Web server..."
 # Start the uvicorn server in the background
 uv run uvicorn backend.main:app --host 127.0.0.1 --port 8000 &
 SERVER_PID=$!
@@ -24,7 +24,7 @@ sleep 2
 # Open in the default macOS browser
 open http://127.0.0.1:8000
 
-echo "obx Web App running... Press Ctrl+C to stop."
+echo "noctua Web App running... Press Ctrl+C to stop."
 
 # Catch interrupt to kill the uvicorn process
 trap "kill -9 $SERVER_PID" INT

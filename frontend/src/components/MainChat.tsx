@@ -227,7 +227,7 @@ export default function MainChat({ onOpenRightSidebar, messages, setMessages }: 
                                     e.currentTarget.style.height = '96px';
                                 }
                             }}
-                            placeholder="Ask obx anything..."
+                            placeholder="Ask noctua anything..."
                             rows={1}
                             className="w-full min-h-[96px] max-h-[240px] resize-none pl-4 pr-32 pt-6 pb-12 bg-transparent outline-none text-[var(--notion-text)] placeholder-[var(--notion-text-light)] leading-relaxed"
                         />
@@ -326,7 +326,7 @@ export default function MainChat({ onOpenRightSidebar, messages, setMessages }: 
                         </div>
                     </form>
                     <div className="text-center mt-3 text-xs text-[var(--notion-text-light)] flex items-center justify-center gap-1 opacity-70">
-                        obx can make mistakes. Consider checking important information.
+                        noctua can make mistakes. Consider checking important information.
                     </div>
                 </div>
             </div>

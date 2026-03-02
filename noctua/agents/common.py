@@ -1,7 +1,7 @@
 from pydantic_ai.mcp import MCPServerStdio
 import os
 import sys
-from obx.core.config import settings
+from noctua.core.config import settings
 
 # MCP Server Factories
 # We use factories instead of global instances to avoid "BrokenResourceError"
@@ -9,19 +9,19 @@ from obx.core.config import settings
 def vault_server():
     return MCPServerStdio(
         sys.executable,
-        args=["-m", "obx.mcp.vault_server"],
+        args=["-m", "noctua.mcp.vault_server"],
     )
 
 def structure_server():
     return MCPServerStdio(
         sys.executable,
-        args=["-m", "obx.mcp.structure_server"],
+        args=["-m", "noctua.mcp.structure_server"],
     )
 
 def google_scholar_server():
     return MCPServerStdio(
         sys.executable,
-        args=["-m", "obx.mcp.google_scholar_server"],
+        args=["-m", "noctua.mcp.google_scholar_server"],
     )
 
 # DuckDuckGo MCP Server is disabled until its dependency constraints

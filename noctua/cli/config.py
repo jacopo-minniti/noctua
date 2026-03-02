@@ -3,10 +3,10 @@ import questionary
 from questionary import Choice
 from pathlib import Path
 import os
-from obx.core.config import settings
-from obx.utils.ui import console, command_timer
+from noctua.core.config import settings
+from noctua.utils.ui import console, command_timer
 
-config_app = typer.Typer(help="Configure obx settings.")
+config_app = typer.Typer(help="Configure noctua settings.")
 
 MODEL_PROVIDERS = ["Google Gemini", "OpenAI", "Anthropic", "OpenRouter", "Other..."]
 EMBEDDING_PROVIDERS = ["sentence-transformers (local)", "openai", "google", "cohere", "voyageai"]
@@ -214,7 +214,7 @@ def config_command(ctx: typer.Context):
     if ctx.invoked_subcommand:
         return
     with command_timer():
-        console.print("[bold cyan]obx Configuration[/bold cyan]")
+        console.print("[bold cyan]noctua Configuration[/bold cyan]")
         vault_path = _configure_vault()
         if not vault_path:
             return

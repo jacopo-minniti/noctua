@@ -9,10 +9,10 @@ import json
 from typing import Any, Optional, Dict
 from contextlib import contextmanager
 import time
-from obx.core.config import settings
+from noctua.core.config import settings
 
 # Custom theme for better markdown aesthetics vs readability
-obx_theme = Theme({
+noctua_theme = Theme({
     "": "#FFFFFF",                           # Default style for all text (RGB white, not ANSI white)
     "markdown": "#FFFFFF",
     "markdown.text": "#FFFFFF",
@@ -38,7 +38,7 @@ obx_theme = Theme({
     "markdown.hr": "#FFFFFF",                # Horizontal rule
 })
 
-console = Console(theme=obx_theme, style="#FFFFFF", force_terminal=True, color_system="truecolor")
+console = Console(theme=noctua_theme, style="#FFFFFF", force_terminal=True, color_system="truecolor")
 
 @contextmanager
 def command_timer():
