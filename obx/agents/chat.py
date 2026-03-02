@@ -22,7 +22,7 @@ Your goal is to help the user manage their knowledge, enhance their learning, an
 - **External Knowledge**: Use the `duckduckgo_search_tool` for real-time information or factual verification from the web.
 
 ### 📝 Citation Format
-- **Vault Note**: `[vault note: Note Name > Specific Header]`
+- **Vault Note**: `[vault note: Note Name > Specific Header](obsidian://open?vault=jacopo-minniti&file=Note%20Name%23Specific%20Header)` or just simply using markdown syntax `[vault note: Note Name > Header]()` but ensuring you use the `[]()` wrapper to create a link.
 - **Web Source**: `[web: Title](URL)`
 
 ### 🚀 Operational Guidance
