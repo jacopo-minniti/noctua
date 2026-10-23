@@ -1,0 +1,93 @@
+{
+  "name": "noctua",
+  "version": "0.1.0",
+  "description": "An experimental workspace for deep learning",
+  "author": "Jacopo Minniti",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "main": "./out/main/index.js",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "npm run typecheck && electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit",
+    "format:check": "prettier --check src tests scripts *.ts",
+    "test": "vitest run",
+    "test:desktop": "npm run build && node scripts/desktop-smoke.mjs",
+    "package": "npm run build && electron-builder --dir"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/lang-markdown": "^6.5.2",
+    "@codemirror/language": "^6.12.4",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.13",
+    "@earendil-works/pi-ai": "1.0.1",
+    "@earendil-works/pi-coding-agent": "1.0.1",
+    "katex": "^0.16.22",
+    "lucide-react": "^0.577.0",
+    "pdfjs-dist": "6.4.299",
+    "pi-web-access": "0.35.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0",
+    "ts-fsrs": "5.4.2",
+    "unpdf": "^1.4.0",
+    "yaml": "^2.8.2",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "electron": "44.5.1",
+    "electron-builder": "26.15.3",
+    "electron-vite": "5.0.0",
+    "playwright": "^1.58.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vitest": "^4.0.0"
+  },
+  "overrides": {
+    "@earendil-works/pi-coding-agent": {
+      "brace-expansion": "5.0.12"
+    },
+    "@electron/get": "^5.0.0"
+  },
+  "build": {
+    "appId": "dev.noctua.app",
+    "productName": "Noctua",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.education",
+      "target": [
+        "dir"
+      ]
+    },
+    "win": {
+      "target": [
+        "dir"
+      ]
+    },
+    "linux": {
+      "target": [
+        "dir"
+      ]
+    }
+  }
+}

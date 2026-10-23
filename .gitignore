@@ -218,3 +218,15 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Noctua / Electron
+node_modules/
+out/
+release/
+.DS_Store
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+.noctua-data/
+test-results/
+.env.*

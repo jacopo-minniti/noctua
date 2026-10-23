@@ -1,0 +1,159 @@
+.pdf-reader {
+  width: 100%;
+  min-width: 0;
+}
+.pdf-controls {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--surface, #fff);
+  padding: 8px 0;
+  flex-wrap: wrap;
+}
+.pdf-controls button {
+  display: flex;
+  background: transparent;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 7px;
+  padding: 5px;
+}
+.pdf-controls label {
+  font-size: 12px;
+}
+.pdf-controls input {
+  width: 48px;
+  padding: 4px;
+  border: 1px solid var(--border, #ddd);
+  border-radius: 5px;
+}
+.pdf-page-scroll {
+  overflow: auto;
+  padding: 2px 0 18px;
+}
+.pdf-page-surface {
+  position: relative;
+  background: #fff;
+  box-shadow: 0 2px 12px #0002;
+}
+.pdf-page-surface canvas {
+  display: block;
+}
+.pdf-page-surface[data-ready='false'] {
+  visibility: hidden;
+}
+.pdf-highlights {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: multiply;
+}
+.pdf-highlights span {
+  position: absolute;
+  background: #ffe17488;
+  border-radius: 2px;
+}
+.pdf-page-surface .textLayer {
+  position: absolute;
+  text-align: initial;
+  inset: 0;
+  overflow: clip;
+  opacity: 1;
+  line-height: 1;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+  z-index: 3;
+  caret-color: CanvasText;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.pdf-page-surface .textLayer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  user-select: text;
+}
+.pdf-page-surface .textLayer > :not(.markedContent),
+.pdf-page-surface .textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.pdf-page-surface .textLayer span.markedContent {
+  top: 0;
+  height: 0;
+}
+.pdf-page-surface .textLayer ::selection {
+  background: #82c4db77;
+}
+.source-highlights {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0;
+}
+.source-highlights blockquote {
+  margin: 0;
+  padding: 9px 12px;
+  background: #fff8da;
+  border-left: 3px solid #e6c755;
+  font-size: 12px;
+}
+.source-highlights button {
+  margin-top: 5px;
+  font-size: 11px;
+}
+.source-highlights blockquote > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.source-reader .focus-source-passage {
+  background: #f3e5af80;
+  border-radius: 4px;
+  box-shadow: 0 0 0 4px #f3e5af45;
+}
+.pdf-page-surface .textLayer .focus-source-passage {
+  background: #e6cb5970;
+  box-shadow: none;
+}
+
+.pdf-page-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 0;
+  overflow: visible;
+}
+.visual-source-reader .pdf-controls {
+  flex-wrap: nowrap;
+  gap: 4px;
+  min-height: 32px;
+  font-size: 11px;
+  overflow-x: auto;
+}
+.visual-source-reader .pdf-controls input {
+  width: 36px;
+  padding: 2px;
+}
+.visual-source-reader .pdf-controls button {
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+/* Horizontal page panning stays inside the page stack, below the fixed controls. */
+.pdf-page-scroll {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
